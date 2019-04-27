@@ -1,0 +1,30 @@
+namespace org.net.glassdoor.reviews
+
+import org.net.glassdoor.participants.*
+/*
+ReviewID format = ReviewerID_CompanyID_DateTime
+reviewMsg format = <500 chars>
+*/
+// Only one review per contributor per company
+asset Review identified by reviewId {
+  o String reviewId regex = /Contr-\d{7}_Comp-\d{7}_([0-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-2[0-1][0-9][0-9]/ //e.g. Contr1234567_Comp1234567_28-01-2004
+  o String reviewMsg regex = /.{0,500}/
+  --> Contributor reviewer
+  --> Company reviewedCo
+
+}
+
+//ReviewerID format = ContributorID
+//CompanyID format = CompanyID
+//reviewmsg = <500 chars>
+transaction PostReview {
+  o String reviewMsg regex = /.{0,500}/
+  --> Contributor reviewer
+  --> Company reviewedCo
+  o DateTime postedOn
+}
+
+//reviewID = reviewID
+event PostedReview {
+  o String reviewId regex = /Contr-\d{7}_Comp-\d{7}_([0-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-2[0-1][0-9][0-9]/ //e.g. Contr1234567_Comp1234567_28-01-2004
+}

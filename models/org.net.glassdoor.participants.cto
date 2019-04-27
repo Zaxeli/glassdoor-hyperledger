@@ -1,0 +1,53 @@
+namespace org.net.glassdoor.participants
+
+// A full access level user
+/* Formats
+ContributorID format: Contr-<7 digit number>  // Decided by admin when issuing identity
+ContributorName format = <70 chars>
+Designation foramt = <50 chars>
+*/
+participant Contributor identified by contributorId {
+  o String contributorId regex = /Contr-\d{7}/
+  o String contributorName regex = /.{0,70}/
+  --> Company employment 
+  o String designation regex = /.{0,50}/
+}
+
+// A company on glassdoor
+/* Formats
+CompanyID format: Comp-<7 digit no.>  // Decided by admin when issuing identity
+CompanyName format = <70 chars>
+CompanyDescription format = <1500 chars>
+*/
+participant Company identified by companyId {
+  o String companyId regex = /Comp-\d{7}/
+  o String companyName regex = /.{0,70}/
+  o String companyDescription regex = /.{0,1000}/
+}
+
+// A lower access level user
+/*
+LurkerID format: Lurk-<7 digit no.>  // Decided by admin when issuing identity
+LurkerName format = <70 chars>
+*/
+participant Lurker identified by lurkerId {
+  o String lurkerId regex = /Lurk-\d{7}/
+  o String lurkerName regex = /.{0,70}/
+}
+/*
+contributorId format = <contrID>
+newDesignation format = <designation>
+*/
+transaction UpdateEmployment {
+  o String contributorId regex = /Contr-\d{7}/
+  o String newDesignation regex = /.{0,50}/
+  --> Company newCompany
+}
+/*
+companyID format = <coID>
+newDescription format = <coDesciption>
+*/
+transaction UpdateInfo {
+  o String companyId regex = /Comp-\d{7}/
+  o String newDescription regex = /.{0,1000}/
+}

@@ -1,0 +1,36 @@
+namespace org.net.glassdoor.jobs
+
+import org.net.glassdoor.participants.*
+
+/**Format
+jobID = Job-<7 digit no.>
+desig = desig
+desc = <1500 chars>
+*/
+asset Job identified by jobId {
+  o String jobId regex = /Job-\d{7}/
+  o String designation regex = /.{0,50}/
+  o String description regex = /.{0,1000}/
+  o Integer salary optional
+  --> Company company
+}
+
+/**Format
+desig = desig
+desc = <1500 chars> */
+transaction PostJob {
+  o String jobId regex = /Job-\d{7}/
+  o String designation regex = /.{0,50}/
+  o String description regex = /.{0,1000}/
+  o Integer salary optional
+  --> Company company
+}
+
+/**Format
+jobID = jobID
+desig = desig */
+event PostedJob {
+  o String jobId regex = /Job-\d{7}/
+  o String designation regex = /.{0,50}/
+  o Integer salary optional
+}

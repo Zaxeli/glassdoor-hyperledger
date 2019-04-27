@@ -1,0 +1,28 @@
+namespace org.net.glassdoor.salary
+
+import org.net.glassdoor.participants.*
+
+//SalaryID format = Salary-<9 digit no.>
+//desig = desig
+asset Salary identified by salaryId {
+  o String salaryId regex = /Salary-\d{9}/
+  o String designation  regex = /.{0,50}/
+  o DateTime postedOn
+  o Integer salary
+  --> Company company
+  --> Contributor poster
+}
+
+/* Format
+salaryId = salaryId
+designation = desgination
+*/
+// salary id should be given by initiator of transaction
+// they could query registry for number of elements in it and +1 to it
+transaction PostSalary {
+  o String salaryId regex = /Salary-\d{9}/
+  o String designation regex = /.{0,50}/
+  o Integer salary
+  --> Company company
+}
+
