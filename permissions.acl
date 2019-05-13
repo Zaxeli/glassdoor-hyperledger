@@ -19,7 +19,7 @@ rule EverybodyCanReadEverything {
     description: "Allow all participants read access to all resources"
     participant: "org.net.glassdoor.SampleParticipant"
     operation: READ
-    resource: "org.net.glassdoor.*"
+    resource: "org.net.glassdoor.**"
     action: ALLOW
 }
 
