@@ -74,6 +74,56 @@ rule ContributorPostReview {
   action: ALLOW
 }
 
+rule ContributorPostSalary {
+  description: "Only the Contributors can post salary"
+  participant(p): "org.net.glassdoor.participants.Contributor"
+  operation: CREATE
+  resource: "org.net.glassdoor.salary.Salary"
+  transaction: "org.net.glassdoor.salary.PostSalary"
+  action: ALLOW
+}
+
+rule CompanyUpdateSelf {
+  description: "Only the Company can update self info"
+  participant(p): "org.net.glassdoor.participants.Company"
+  operation: UPDATE
+  resource(res): "org.net.glassdoor.participants.Company"
+  transaction(tx): "org.net.glassdoor.participants.UpdateInfo"
+  condition: (tx.companyId === res.companyId)
+  action: ALLOW
+}
+
+rule ContributorUpdateEmploy {
+  description: "Only the Contributors or current Company can update employment"
+  participant(p): "org.net.glassdoor.participants.Contributor"
+  operation: UPDATE
+  resource(res): "org.net.glassdoor.participants.Contributor"
+  transaction(tx): "org.net.glassdoor.participants.UpdateEmployment"
+  condition: (tx.contributorId === res.contributorId)
+  action: ALLOW
+}
+
+rule CompanyUpdateEmploy {
+  description: "Only the Contributors or current Company can update employment"
+  participant(p): "org.net.glassdoor.participants.Company"
+  operation: UPDATE
+  resource(res): "org.net.glassdoor.participants.Contributor"
+  transaction(tx): "org.net.glassdoor.participants.UpdateEmployment"
+  condition: (tx.contributorId === res.contributorId)
+  action: ALLOW
+}
+
+rule CompanyPostJob {
+  description: "Only the Company can post jobs"
+  participant(p): "org.net.glassdoor.participants.Company"
+  operation: CREATE
+  resource: "org.net.glassdoor.jobs.Job"
+  transaction: "org.net.glassdoor.jobs.PostJob"
+  action: ALLOW
+}
+
+
+
 // Go through each participant in bndef one-by-one and see who can do what
 // Who can use which transactions
 // who can read what
